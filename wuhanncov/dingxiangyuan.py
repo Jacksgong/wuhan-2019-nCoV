@@ -18,6 +18,8 @@ import json
 import re
 from datetime import datetime
 
+from wuhanncov.terminalcolor import colorize, YELLOW, GREEN
+
 
 class Event:
     # {
@@ -51,8 +53,12 @@ class Event:
         return json.dumps(self.origin_json, ensure_ascii=False)
 
     def print_desc(self):
-        print "%s - %s %s" % (self.title, self.source_name, datetime.fromtimestamp(self.timestamp_ms / 1000))
-        print self.summary
+        print(colorize("%s - %s %s" % (self.title, self.source_name, datetime.fromtimestamp(self.timestamp_ms / 1000)),
+                       fg=YELLOW))
+        print(self.summary)
+
+    def is_same(self, event):
+        return self.summary == event.summary
 
 
 class City:
@@ -94,7 +100,7 @@ class EventList:
         for event in self.event_list:
             if index >= count:
                 break
-            print event.dump_json()
+            print(event.dump_json())
             index += 1
 
     def print_desc(self, count=2):
@@ -103,8 +109,17 @@ class EventList:
             if index >= count:
                 break
             event.print_desc()
-            print "--------------"
+            print("--------------")
             index += 1
+
+    def print_desc_with_compare(self, last_event_list):
+        top_event = last_event_list.event_list[0]
+        for event in self.event_list:
+            if not event.is_same(top_event):
+                print("--------------")
+                event.print_desc()
+            else:
+                break
 
 
 class Summary:
@@ -124,8 +139,11 @@ class Summary:
     def dump_json(self):
         return json.dumps(self.origin_json, ensure_ascii=False)
 
-    def print_desc(self):
-        print self.content
+    def print_desc(self, last_summary=None):
+        if last_summary is None or last_summary.content != self.content:
+            print("=======================================================")
+            print(colorize(self.content, fg=GREEN))
+            print("=======================================================")
 
 
 class DingXiangYuan:
@@ -161,10 +179,8 @@ class DingXiangYuan:
         response = requests.get('https://3g.dxy.cn/newh5/view/pneumonia', headers=headers, params=params)
         # print response.content
 
-        summary_re = re.compile(
-            r'try *\{ *window\.getStatisticsService *=(.*)\}catch\(e\)')
-        detail_re = re.compile(
-            r'try *\{ *window\.getTimelineService *=(.*)\}catch\(e\)')
+        summary_re = re.compile(r'try *\{ *window\.getStatisticsService *=(.*)\}catch\(e\)')
+        detail_re = re.compile(r'try *\{ *window\.getTimelineService *=(.*)\}catch\(e\)')
 
         is_in_body = False
         lines = response.content.splitlines()
@@ -193,6 +209,4 @@ class DingXiangYuan:
                         detail_json = json.loads(match[0])
                         event_list = EventList(detail_json['result'])
 
-        summary.print_desc()
-        print "-------------------------------------------------------"
-        event_list.print_desc()
+        return summary, event_list

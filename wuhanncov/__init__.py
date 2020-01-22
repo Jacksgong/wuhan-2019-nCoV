@@ -15,16 +15,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 __author__ = 'JacksGong'
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __description__ = 'This tool is used for crawl Wuhan 2019nCov Info'
 
-import re
-from os import environ
-
-from wuhanncov.dingxiangyuan import DingXiangYuan
-
-NO_HOME_PATH = re.compile(r'~/(.*)')
-HOME_PATH = environ['HOME']  # get the home case path
+from wuhanncov.check_loop import CheckLoop
 
 
 def main():
@@ -36,4 +30,4 @@ def main():
     print("                   Hope You Safe!")
     print("-------------------------------------------------------")
 
-    DingXiangYuan().fetch()
+    CheckLoop().start()
