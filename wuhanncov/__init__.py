@@ -36,4 +36,4 @@ def main():
     print("                   Hope You Safe!")
     print("-------------------------------------------------------")
 
-    DingXiangYuan().craw()
+    DingXiangYuan().fetch()

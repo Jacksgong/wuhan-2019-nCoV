@@ -132,7 +132,8 @@ class DingXiangYuan:
     def __init__(self):
         pass
 
-    def craw(self):
+    @staticmethod
+    def fetch():
         import requests
 
         headers = {
