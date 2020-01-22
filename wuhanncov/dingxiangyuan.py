@@ -202,11 +202,6 @@ class DingXiangYuan:
         summary = None
         event_list = None
         for line in lines:
-            # if is_in_statistic_service:
-            #     if line.__contains__("</script>"):
-            #         break
-            #     print line
-
             if line.startswith("<body>"):
                 is_in_body = True
 
