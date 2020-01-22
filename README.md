@@ -19,4 +19,4 @@ whncov
 
 
 
-![](https://github.com/Jacksgong/wuhan-2019-nCoV/raw/master/arts/demo.png)
+![](https://github.com/Jacksgong/wuhan-2019-nCoV/raw/master/arts/demo-v0.3.png)
