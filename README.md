@@ -21,4 +21,4 @@ sudo gem install terminal-notifier
 whncov
 ```
 
-![](https://github.com/Jacksgong/wuhan-2019-nCoV/raw/master/arts/demo-v0.3.png)
+![](https://github.com/Jacksgong/wuhan-2019-nCoV/raw/master/arts/demo-v0.0.4.png)
