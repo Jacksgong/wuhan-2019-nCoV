@@ -33,7 +33,7 @@ def main():
     print("")
     print(__description__)
     print("")
-    print("                   你的信仰在保佑你，愿你健康!")
+    print("                   Hope You Safe!")
     print("-------------------------------------------------------")
 
     DingXiangYuan().craw()

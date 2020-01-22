@@ -2,26 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="78c03afd-871d-4ebb-98f2-d6cd79e8eb33" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/jacks.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/wuhan-2019ncov.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WuhanNCov.egg-info/PKG-INFO" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WuhanNCov.egg-info/SOURCES.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WuhanNCov.egg-info/dependency_links.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WuhanNCov.egg-info/entry_points.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WuhanNCov.egg-info/requires.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WuhanNCov.egg-info/top_level.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/lib/wuhanncov/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/lib/wuhanncov/dingxiangyuan.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/debug.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dist/WuhanNCov-0.0.1-py2.7.egg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wuhanncov/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wuhanncov/dingxiangyuan.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wuhanncov/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/wuhanncov/__init__.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
