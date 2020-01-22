@@ -9,6 +9,12 @@
 sudo pip install Wuhan2019nCoV
 ```
 
+如果你是Mac OS，请通过Ruby安装`terminal-notifier`来接收通知:
+
+```
+sudo gem install terminal-notifier
+```
+
 ## 使用
 
 ```
