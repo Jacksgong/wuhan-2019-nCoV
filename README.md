@@ -2,3 +2,4 @@
 
 要的自取
 
+![](https://github.com/Jacksgong/wuhan-2019-nCoV/raw/master/arts/demo.png)
