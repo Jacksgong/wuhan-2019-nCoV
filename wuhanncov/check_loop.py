@@ -1,4 +1,5 @@
 import time
+from random import randint
 from sys import stdout
 from threading import Thread
 
@@ -44,9 +45,11 @@ class CheckLoop:
     def start(self):
         # first enter just print news
         self._fetch()
+        random_min_interval = 5
+        random_max_interval = 20
 
         i = 0
-        interval_sec = 5
+        interval_sec = randint(random_min_interval, random_max_interval)
         thread = None
         while True:
             try:
@@ -54,7 +57,7 @@ class CheckLoop:
                     info = 'checking news.....              '
                 else:
                     interval_sec -= .2
-                    info = "waiting next check less %ds" % interval_sec
+                    info = "waiting next check less %ds     " % interval_sec
 
                 print(bar[i % len(bar)] + ' ' + info + '\r'),
                 i += 1
@@ -64,6 +67,6 @@ class CheckLoop:
                 if interval_sec <= 0:
                     thread = Thread(target=self._fetch)
                     thread.start()
-                    interval_sec = 5
+                    interval_sec = randint(random_min_interval, random_max_interval)
             except KeyboardInterrupt:
                 exit(0)
