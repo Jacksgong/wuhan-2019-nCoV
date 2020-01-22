@@ -18,7 +18,7 @@ limitations under the License.
 from setuptools import setup, find_packages
 
 setup(
-    name='WuhanNCov',
+    name='Wuhan2019nCoV',
     version='0.0.1',
     packages=find_packages(exclude=['ats']),
 
