@@ -26,6 +26,10 @@ class CheckLoop:
 
     def _fetch(self):
         summary, event_list = DingXiangYuan().fetch()
+        if summary is None:
+            time.sleep(2)
+            self._fetch()
+            return
 
         if self.last_summary is None:
             summary.print_desc()
@@ -47,7 +51,7 @@ class CheckLoop:
         while True:
             try:
                 if thread and thread.isAlive():
-                    info = 'checking news'
+                    info = 'checking news.....              '
                 else:
                     interval_sec -= .2
                     info = "waiting next check less %ds" % interval_sec

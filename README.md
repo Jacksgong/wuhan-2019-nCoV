@@ -1,5 +1,8 @@
 # 获取武汉 2019nCov信息
 
+
+[![](https://img.shields.io/badge/pip-v0.0.3%20Wuhan2019nCoV-yellow.svg)](https://pypi.python.org/pypi/Wuhan2019nCoV)
+
 要的自取
 
 安装

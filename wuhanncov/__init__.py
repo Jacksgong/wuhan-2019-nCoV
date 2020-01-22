@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 __author__ = 'JacksGong'
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __description__ = 'This tool is used for crawl Wuhan 2019nCov Info'
 
 from wuhanncov.check_loop import CheckLoop
@@ -25,7 +25,8 @@ def main():
     print("-------------------------------------------------------")
     print("                  WuHan 2019nCov v" + __version__)
     print("")
-    print(__description__)
+    print("     https://github.com/Jacksgong/wuhan-2019-nCoV   ")
+    print("    This tool is used for crawl Wuhan 2019nCov Info   ")
     print("")
     print("                   Hope You Safe!")
     print("-------------------------------------------------------")

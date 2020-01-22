@@ -114,7 +114,12 @@ class EventList:
 
     def print_desc_with_compare(self, last_event_list):
         top_event = last_event_list.event_list[0]
+        next_event = last_event_list.event_list[1]
+        third_event = last_event_list.event_list[3]
         for event in self.event_list:
+            if event.is_same(next_event) or event.is_same(third_event):
+                # 这种情况是最新的居然比旧的旧数据一样
+                break
             if not event.is_same(top_event):
                 print("--------------")
                 event.print_desc()
