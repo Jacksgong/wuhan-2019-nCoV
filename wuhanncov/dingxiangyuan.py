@@ -18,6 +18,7 @@ import json
 import re
 from datetime import datetime
 
+from wuhanncov.osx import notify
 from wuhanncov.terminalcolor import colorize, YELLOW, GREEN
 
 
@@ -52,9 +53,12 @@ class Event:
     def dump_json(self):
         return json.dumps(self.origin_json, ensure_ascii=False)
 
-    def print_desc(self):
-        print(colorize("%s - %s %s" % (self.title, self.source_name, datetime.fromtimestamp(self.timestamp_ms / 1000)),
-                       fg=YELLOW))
+    def print_desc(self, append_list=None):
+        title = "%s - %s %s" % (self.title, self.source_name, datetime.fromtimestamp(self.timestamp_ms / 1000))
+        if append_list is not None:
+            append_list.append(title)
+
+        print(colorize(title, fg=YELLOW))
         print(self.summary)
 
     def is_same(self, event):
@@ -105,26 +109,30 @@ class EventList:
 
     def print_desc(self, count=2):
         index = 0
+        change_list = list()
         for event in self.event_list:
             if index >= count:
                 break
-            event.print_desc()
+            event.print_desc(change_list)
             print("--------------")
             index += 1
+        return change_list
 
     def print_desc_with_compare(self, last_event_list):
         top_event = last_event_list.event_list[0]
         next_event = last_event_list.event_list[1]
         third_event = last_event_list.event_list[3]
+        change_list = list()
         for event in self.event_list:
             if event.is_same(next_event) or event.is_same(third_event):
                 # 这种情况是最新的居然比旧的旧数据一样
                 break
             if not event.is_same(top_event):
                 print("--------------")
-                event.print_desc()
+                event.print_desc(change_list)
             else:
                 break
+        return change_list
 
 
 class Summary:
@@ -149,6 +157,8 @@ class Summary:
             print("=======================================================")
             print(colorize(self.content, fg=GREEN))
             print("=======================================================")
+            return self.content
+        return None
 
 
 class DingXiangYuan:

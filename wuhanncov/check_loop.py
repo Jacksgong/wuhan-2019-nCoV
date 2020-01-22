@@ -1,9 +1,26 @@
+# coding=utf-8
+"""
+Copyright (C) 2020 Jacksgong.com.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
 import time
 from random import randint
 from sys import stdout
 from threading import Thread
 
 from wuhanncov.dingxiangyuan import DingXiangYuan
+from wuhanncov.osx import notify
 
 bar = [
     " [=     ]",
@@ -27,20 +44,28 @@ class CheckLoop:
 
     def _fetch(self):
         summary, event_list = DingXiangYuan().fetch()
+        notify_title = None
+        notify_message_list = list()
         if summary is None:
             time.sleep(2)
             self._fetch()
             return
 
         if self.last_summary is None:
-            summary.print_desc()
-            event_list.print_desc()
+            notify_title = summary.print_desc()
+            notify_message_list = event_list.print_desc()
         else:
-            summary.print_desc(self.last_summary)
-            event_list.print_desc_with_compare(self.last_event_list)
+            notify_title = summary.print_desc(self.last_summary)
+            notify_message_list = event_list.print_desc_with_compare(self.last_event_list)
 
         self.last_summary = summary
         self.last_event_list = event_list
+
+        if notify_title is not None:
+            last_msg = notify_message_list[0]
+            notify(title=notify_title,
+                   subtitle=u"包含更新%d条" % len(notify_message_list),
+                   message=u"最后一条: %s" % last_msg)
 
     def start(self):
         # first enter just print news
