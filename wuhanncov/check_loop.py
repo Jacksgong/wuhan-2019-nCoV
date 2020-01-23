@@ -81,9 +81,15 @@ class CheckLoop:
                     last_msg = "无新闻只有总数变化"
 
             if notify_title is not None:
+                try:
+                    message = u"最后一条: %s" % last_msg
+                except UnicodeDecodeError:
+                    message = u"最后一条: <未知>"
+
+                subtitle = u"包含更新%d条" % len(notify_message_list)
                 notify(title=notify_title,
-                       subtitle=u"包含更新%d条" % len(notify_message_list),
-                       message=u"最后一条: %s" % last_msg)
+                       subtitle=subtitle,
+                       message=message)
 
             self.last_state = "Refresh Success"
         except ConnectionError:

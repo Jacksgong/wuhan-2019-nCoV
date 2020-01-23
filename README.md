@@ -1,6 +1,6 @@
 # 获取武汉 2019nCov信息
 
-[![](https://img.shields.io/badge/pip-v0.0.7%20Wuhan2019nCoV-yellow.svg)](https://pypi.python.org/pypi/Wuhan2019nCoV)
+[![](https://img.shields.io/badge/pip-v0.0.8%20Wuhan2019nCoV-yellow.svg)](https://pypi.python.org/pypi/Wuhan2019nCoV)
 
 > 算是基本满足我的基本需求，要的自取，欢迎PR。
 
@@ -22,7 +22,7 @@ sudo gem install terminal-notifier
 whncov
 ```
 
-![](https://github.com/Jacksgong/wuhan-2019-nCoV/raw/master/arts/demo-v0.0.4.png)
+![](https://github.com/Jacksgong/wuhan-2019-nCoV/raw/master/arts/demo-v0.0.8.png)
 
 ```
 =======================================================
