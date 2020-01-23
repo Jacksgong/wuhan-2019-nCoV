@@ -114,7 +114,7 @@ class EventList:
             if index >= count:
                 break
             event.print_desc(change_list)
-            print("--------------")
+            print("--------------                                               ")
             index += 1
         return change_list
 
@@ -128,7 +128,7 @@ class EventList:
                 # 这种情况是最新的居然比旧的旧数据一样
                 break
             if not event.is_same(top_event):
-                print("--------------")
+                print("--------------                                               ")
                 event.print_desc(change_list)
             else:
                 break
