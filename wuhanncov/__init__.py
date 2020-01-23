@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 __author__ = 'JacksGong'
-__version__ = '0.0.6'
+__version__ = '0.0.7'
 __description__ = 'This tool is used for crawl Wuhan 2019nCov Info'
 
 from wuhanncov.check_loop import CheckLoop
