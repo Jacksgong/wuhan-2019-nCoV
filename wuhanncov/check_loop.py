@@ -99,7 +99,7 @@ class CheckLoop:
         while True:
             try:
                 if thread and thread.isAlive():
-                    info = 'checking news.....              '
+                    info = 'checking news.....                                            '
                 else:
                     interval_sec -= .2
                     info = "waiting next check less %ds     " % interval_sec
