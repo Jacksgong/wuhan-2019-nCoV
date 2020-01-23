@@ -18,7 +18,6 @@ import json
 import re
 from datetime import datetime
 
-from wuhanncov.osx import notify
 from wuhanncov.terminalcolor import colorize, YELLOW, GREEN
 
 
@@ -175,7 +174,7 @@ class Summary:
 
 class DingXiangYuan:
     def __init__(self):
-        pass
+        print colorize("丁香园实时: ", fg=YELLOW) + "https://3g.dxy.cn/newh5/view/pneumonia"
 
     @staticmethod
     def fetch():

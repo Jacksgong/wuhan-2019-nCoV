@@ -40,14 +40,16 @@ bar = [
 
 class CheckLoop:
 
-    def __init__(self):
+    def __init__(self, source_list):
         self.last_summary = None
         self.last_event_list = None
         self.last_state = None
+        # todo use for fetch data and compare, need a unified compare
+        self.source_list = source_list
 
     def _fetch(self):
         try:
-            summary, event_list = DingXiangYuan().fetch()
+            summary, event_list = self.source_list[0].fetch()
             notify_title = None
             notify_message_list = list()
             last_msg = None

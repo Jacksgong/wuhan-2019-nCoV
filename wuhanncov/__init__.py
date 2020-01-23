@@ -19,6 +19,9 @@ __version__ = '0.0.7'
 __description__ = 'This tool is used for crawl Wuhan 2019nCov Info'
 
 from wuhanncov.check_loop import CheckLoop
+from wuhanncov.dingxiangyuan import DingXiangYuan
+from wuhanncov.wangyi import WangYi
+from wuhanncov.yanshixinwen import YanShiXinWen
 
 
 def main():
@@ -31,4 +34,4 @@ def main():
     print("                   Hope You Safe!")
     print("-------------------------------------------------------")
 
-    CheckLoop().start()
+    CheckLoop([DingXiangYuan(), WangYi(), YanShiXinWen()]).start()
