@@ -60,7 +60,7 @@ class Event:
         print(self.summary)
 
     def get_title(self):
-        return "%s - %s %s" % (self.title, self.source_name, datetime.fromtimestamp(self.timestamp_ms / 1000))
+        return u"%s - %s %s" % (self.title, self.source_name, datetime.fromtimestamp(self.timestamp_ms / 1000))
 
     def is_same(self, event):
         return self.summary == event.summary
