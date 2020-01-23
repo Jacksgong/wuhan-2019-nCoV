@@ -53,13 +53,14 @@ class Event:
     def dump_json(self):
         return json.dumps(self.origin_json, ensure_ascii=False)
 
-    def print_desc(self, append_list=None):
-        title = "%s - %s %s" % (self.title, self.source_name, datetime.fromtimestamp(self.timestamp_ms / 1000))
-        if append_list is not None:
-            append_list.append(title)
+    def print_desc(self):
+        title = self.get_title()
 
         print(colorize(title, fg=YELLOW))
         print(self.summary)
+
+    def get_title(self):
+        return "%s - %s %s" % (self.title, self.source_name, datetime.fromtimestamp(self.timestamp_ms / 1000))
 
     def is_same(self, event):
         return self.summary == event.summary
@@ -113,9 +114,10 @@ class EventList:
         for event in self.event_list:
             if index >= count:
                 break
-            event.print_desc(change_list)
-            print("--------------                                               ")
+            change_list.append(event)
             index += 1
+
+        self.print_list(change_list)
         return change_list
 
     def print_desc_with_compare(self, last_event_list):
@@ -128,11 +130,20 @@ class EventList:
                 # 这种情况是最新的居然比旧的旧数据一样
                 break
             if not event.is_same(top_event):
-                print("--------------                                               ")
-                event.print_desc(change_list)
+                change_list.append(event)
             else:
                 break
+
+        self.print_list(change_list)
+
         return change_list
+
+    @staticmethod
+    def print_list(news_event_list):
+        old_to_new_list = reversed(news_event_list)
+        for event in old_to_new_list:
+            print("--------------                                               ")
+            event.print_desc()
 
 
 class Summary:

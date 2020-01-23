@@ -68,13 +68,13 @@ class CheckLoop:
 
             if notify_title is None:
                 if len(notify_message_list) > 0:
-                    last_msg = notify_message_list[0]
+                    last_msg = notify_message_list[0].get_title()
                     notify_title = last_msg
                 else:
                     notify_title = None
             else:
                 if len(notify_message_list) > 0:
-                    last_msg = notify_message_list[0]
+                    last_msg = notify_message_list[0].get_title()
                 else:
                     last_msg = "无新闻只有总数变化"
 
