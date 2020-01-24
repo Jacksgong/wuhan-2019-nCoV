@@ -228,6 +228,6 @@ class DingXiangYuan:
                     match = detail_re.findall(content)
                     if match:
                         detail_json = json.loads(match[0])
-                        event_list = EventList(detail_json['result'])
+                        event_list = EventList(detail_json)
 
         return summary, event_list
