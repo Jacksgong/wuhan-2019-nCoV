@@ -16,6 +16,13 @@ sudo pip install Wuhan2019nCoV
 sudo gem install terminal-notifier
 ```
 
+## 升级
+
+```
+sudo pip install Wuhan2019nCoV --upgrade
+```
+
+
 ## 使用
 
 ```
