@@ -45,7 +45,7 @@ class Event:
 
         self.timestamp_ms = event_json['pubDate']
         self.title = event_json['title']
-        self.summary = event_json['summary']
+        self.summary = event_json['summary'].strip()
         self.data_desc = event_json['pubDateStr']
         self.origin_json = event_json
 
@@ -149,7 +149,7 @@ class EventList:
 class Summary:
     def __init__(self, summary_json):
         # 全国 确诊 455 例 疑似 143 例 治愈 25 例 死亡 9 例
-        self.content = summary_json['countRemark']
+        self.content = summary_json['countRemark'].strip().replace('\n', ' ')
         self.deleted = summary_json['deleted'] != 'false'
         # 传播进展：疫情扩散中，存在病毒变异可能
         self.proceed = summary_json['summary']

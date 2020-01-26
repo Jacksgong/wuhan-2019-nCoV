@@ -54,7 +54,7 @@ class CheckLoop:
             notify_message_list = list()
             last_msg = None
             if summary is None:
-                time.sleep(2)
+                time.sleep(3)
                 self._fetch()
                 return
 
