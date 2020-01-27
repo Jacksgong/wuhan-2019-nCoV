@@ -15,11 +15,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 __author__ = 'JacksGong'
-__version__ = '0.0.9'
+__version__ = '0.1.0'
 __description__ = 'This tool is used for crawl Wuhan 2019nCov Info'
 
 from wuhanncov.check_loop import CheckLoop
 from wuhanncov.dingxiangyuan import DingXiangYuan
+from wuhanncov.fenghuang import FengHuang
 from wuhanncov.wangyi import WangYi
 from wuhanncov.yanshixinwen import YanShiXinWen
 
@@ -34,4 +35,4 @@ def main():
     print("                   Hope You Safe!")
     print("-------------------------------------------------------")
 
-    CheckLoop([DingXiangYuan(), WangYi(), YanShiXinWen()]).start()
+    CheckLoop([DingXiangYuan(), WangYi(), YanShiXinWen(), FengHuang()]).start()
