@@ -52,18 +52,25 @@ class Event:
     def dump_json(self):
         return json.dumps(self.origin_json, ensure_ascii=False)
 
-    def print_desc(self):
+    def get_desc(self):
         title = self.get_title()
 
-        print(colorize(title, fg=YELLOW))
-        print(self.summary)
+        return colorize(title, fg=YELLOW) + "\n" \
+               + self.summary
 
     def get_title(self):
         return u"%s - %s %s" % (self.title, self.source_name, datetime.fromtimestamp(self.timestamp_ms / 1000))
 
     def is_same(self, event):
-        return self.title == event.title and self.source_name == event.source_name \
-               and self.timestamp_ms == event.timestamp_ms
+        # return self.title == event.title and self.source_name == event.source_name \
+        #        and self.timestamp_ms / 1000 == event.timestamp_ms / 1000
+        return self.get_title().__eq__(event.get_title())
+
+    def __hash__(self):
+        return hash(self.get_title())
+
+    def __gt__(self, other):
+        return self.timestamp_ms > other.timestamp_ms
 
 
 class City:
@@ -93,6 +100,7 @@ class City:
 
 
 class EventList:
+    last_top_event_cache = None
 
     def __init__(self, event_list_json):
         self.event_list = list()
@@ -121,18 +129,58 @@ class EventList:
         return change_list
 
     def print_desc_with_compare(self, last_event_list):
-        top_event = last_event_list.event_list[0]
-        next_event = last_event_list.event_list[1]
-        third_event = last_event_list.event_list[3]
+        last_top_event = last_event_list.event_list[0]
+        last_second_event = last_event_list.event_list[1]
+        last_third_event = last_event_list.event_list[3]
+        new_top_event = self.event_list[0]
+        if new_top_event.timestamp_ms < last_top_event.timestamp_ms:
+            # print "time not match, cache new[" + new_top_event.get_title() + "] older than last[" + last_top_event.get_title() + "]"
+            return list()
+
         change_list = list()
         for event in self.event_list:
-            if event.is_same(next_event) or event.is_same(third_event):
+            if event.is_same(last_second_event) or event.is_same(last_third_event):
                 # 这种情况是最新的居然比旧的旧数据一样
                 break
-            if not event.is_same(top_event):
+
+            if not event.is_same(last_top_event):
                 change_list.append(event)
             else:
                 break
+
+        if len(change_list) > 0:
+            last_top = last_top_event.get_title()
+            change_top = change_list[0].get_title()
+            new_top = self.event_list[0].get_title()
+            # print "test--------------"
+            # print "last top: " + last_top + " last size: " + len(last_event_list.event_list).__str__()
+            # print "change top: " + change_top + " change size: " + len(change_list).__str__()
+            # print "new top: " + new_top + " new size: " + len(self.event_list).__str__()
+            # print "test--------------"
+
+            if self.last_top_event_cache is not None and self.last_top_event_cache == change_top:
+                print "wrong last[%s] change[%s] == " % (self.last_top_event_cache, new_top)
+                discard_event = None
+                for change_event in change_list:
+                    if change_event.get_title() == self.last_top_event_cache:
+                        discard_event = change_event
+                        break
+                if discard_event is not None:
+                    change_list.remove(discard_event)
+            self.last_top_event_cache = last_top
+        elif len(self.event_list) < len(last_event_list.event_list):
+            # print "test-----------------"
+            # print "length not match, cache new[" + new_top_event.get_title() + "] " + len(
+            #     self.event_list).__str__() + " older than last[" + last_top_event.get_title() + "]" + len(
+            #     last_event_list.event_list).__str__()
+            # print "new: "
+            # for event in self.event_list:
+            #     print event.get_title()
+            # print "old: "
+            # for event in last_event_list.event_list:
+            #     print event.get_title()
+            # print "test-----------------"
+            return list()
 
         self.print_list(change_list)
 
@@ -142,15 +190,24 @@ class EventList:
     def print_list(news_event_list):
         old_to_new_list = reversed(news_event_list)
         for event in old_to_new_list:
-            print("--------------                                               ")
-            event.print_desc()
+            desc = "--------------                                               \n" + event.get_desc()
+            print(desc)
 
 
 class Summary:
     def __init__(self, summary_json):
-        # 全国 确诊 455 例 疑似 143 例 治愈 25 例 死亡 9 例
+        # 确诊 2823 例，疑似 5794 例 死亡 81 例，治愈 58 例
         self.content = summary_json['countRemark'].strip().replace('\n', ' ')
+
+        summary_detail_re = re.compile(r'\D*(\d+)\D*(\d+)\D*(\d+)\D*(\d+)\D*')
+        content_re = summary_detail_re.findall(self.content)
+        self.confirm_count = int(content_re[0][0])
+        self.suspect_count = int(content_re[0][1])
+        self.dead_count = int(content_re[0][2])
+        self.survive_count = int(content_re[0][3])
+
         self.deleted = summary_json['deleted'] != 'false'
+
         # 传播进展：疫情扩散中，存在病毒变异可能
         self.proceed = summary_json['summary']
         # 尚不明确；病毒：新型冠状病毒 2019-nCoV
@@ -164,7 +221,9 @@ class Summary:
         return json.dumps(self.origin_json, ensure_ascii=False)
 
     def print_desc(self, last_summary=None):
-        if last_summary is None or last_summary.content != self.content:
+        if last_summary is None or (
+                last_summary.content != self.content and self.confirm_count >= last_summary.confirm_count
+                and self.survive_count >= last_summary.survive_count):
             print("=======================================================")
             print(colorize(self.content, fg=GREEN))
             print("=======================================================")

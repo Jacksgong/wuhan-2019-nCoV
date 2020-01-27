@@ -65,8 +65,13 @@ class CheckLoop:
                 notify_title = summary.print_desc(self.last_summary)
                 notify_message_list = event_list.print_desc_with_compare(self.last_event_list)
 
-            self.last_summary = summary
-            self.last_event_list = event_list
+            if notify_title is not None:
+                # valid summary
+                self.last_summary = summary
+
+            if len(notify_message_list) > 0:
+                # valid event list
+                self.last_event_list = event_list
 
             if notify_title is None:
                 if len(notify_message_list) > 0:
