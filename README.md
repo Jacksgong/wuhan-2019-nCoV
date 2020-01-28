@@ -50,6 +50,37 @@ whncov
 [  =    ] [Last Refresh Success] waiting next check less 0s
 ```
 
+```
+$ whncov --help
+-------------------------------------------------------
+                  WuHan 2019nCov v0.1.2
+
+     https://github.com/Jacksgong/wuhan-2019-nCoV
+    This tool is used for crawl Wuhan 2019nCov Info
+
+                   Hope You Safe!
+-------------------------------------------------------
+usage: whncov [-h] [-lark-url LARK_URL] [--hide-terminal-process]
+              [--ignore-first-two-note]
+              [dimension [dimension ...]]
+
+This tool is used for crawl Wuhan 2019nCov Info
+
+positional arguments:
+  dimension             output dimensions: lark, terminal, all, mac
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -lark-url LARK_URL, --lark-url LARK_URL
+                        the webhook or lark url for lark dimension for lark
+                        notify
+  --hide-terminal-process
+                        whether need to hide process waiting output
+  --ignore-first-two-note
+                        whether need to ignore first two output
+```
+
+
 ## LICENSE
 
 ```
