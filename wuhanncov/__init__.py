@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 __author__ = 'JacksGong'
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 __description__ = 'This tool is used for crawl Wuhan 2019nCov Info'
 
 import argparse
