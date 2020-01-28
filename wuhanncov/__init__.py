@@ -18,9 +18,13 @@ __author__ = 'JacksGong'
 __version__ = '0.1.1'
 __description__ = 'This tool is used for crawl Wuhan 2019nCov Info'
 
+import argparse
+
 from wuhanncov.check_loop import CheckLoop
 from wuhanncov.dingxiangyuan import DingXiangYuan
 from wuhanncov.fenghuang import FengHuang
+from wuhanncov.output_helper import OutputHelper
+from wuhanncov.toutiao import TouTiao
 from wuhanncov.wangyi import WangYi
 from wuhanncov.yanshixinwen import YanShiXinWen
 
@@ -35,4 +39,42 @@ def main():
     print("                   Hope You Safe!")
     print("-------------------------------------------------------")
 
-    CheckLoop([DingXiangYuan(), WangYi(), YanShiXinWen(), FengHuang()]).start()
+    dimensions = {
+        'all': 'all',
+        'lark': 'lark',
+        'terminal': 'terminal',
+        'mac': 'mac'
+    }
+    parser = argparse.ArgumentParser(description=__description__)
+
+    parser.add_argument('dimension', nargs='*',
+                        help='output dimensions: {}'.format(', '.join(dimensions)),
+                        default=['terminal', 'mac'])
+    parser.add_argument('-lark-url', '--lark-url', dest='lark_url',
+                        help='the webhook or lark url for lark dimension for lark notify',
+                        default='')
+    parser.add_argument('--hide-terminal-process', dest='hide_terminal_process', action='store_true',
+                        help='whether need to hide process waiting output')
+
+    args = parser.parse_args()
+    OutputHelper.lark_url = args.lark_url
+    hide_terminal_process = args.hide_terminal_process
+
+    print ".........................."
+    print "Output Dimensions: [%s]" % ', '.join(args.dimension)
+    if len(OutputHelper.lark_url) > 0:
+        print "Lark Url: " + OutputHelper.lark_url
+    if hide_terminal_process:
+        print "Hide terminal process waiting output"
+    print ".........................."
+
+    for dimension in args.dimension:
+        if dimension not in dimensions:
+            print "supported dimensions are: %s" % ', '.join(dimensions)
+            exit(-1)
+
+        OutputHelper.is_terminal_output = (dimension == 'all' or dimension == 'terminal')
+        OutputHelper.is_lark_output = (dimension == 'all' or dimension == 'lark')
+        OutputHelper.is_mac_output = (dimension == 'all' or dimension == 'mac')
+
+    CheckLoop([DingXiangYuan(), WangYi(), YanShiXinWen(), FengHuang(), TouTiao()]).start(hide_terminal_process)

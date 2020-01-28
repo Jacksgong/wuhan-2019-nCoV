@@ -19,7 +19,7 @@ import os
 
 
 # [sudo] gem install terminal-notifier
-def notify(title, subtitle, message):
+def notify_mac(title, subtitle, message):
     if os.name == 'posix':
         t = "-title '%s'" % title
         s = "-subtitle '%s'" % subtitle

@@ -20,9 +20,7 @@ from sys import stdout
 from threading import Thread
 
 from requests import ConnectionError
-
-from wuhanncov.dingxiangyuan import DingXiangYuan
-from wuhanncov.osx import notify
+from wuhanncov.output_helper import notify_mac_msg
 
 bar = [
     " [=     ]",
@@ -50,9 +48,6 @@ class CheckLoop:
     def _fetch(self):
         try:
             summary, event_list = self.source_list[0].fetch()
-            notify_title = None
-            notify_message_list = list()
-            last_msg = None
             if summary is None:
                 time.sleep(3)
                 self._fetch()
@@ -73,34 +68,13 @@ class CheckLoop:
                 # valid event list
                 self.last_event_list = event_list
 
-            if notify_title is None:
-                if len(notify_message_list) > 0:
-                    last_msg = notify_message_list[0].get_title()
-                    notify_title = last_msg
-                else:
-                    notify_title = None
-            else:
-                if len(notify_message_list) > 0:
-                    last_msg = notify_message_list[0].get_title()
-                else:
-                    last_msg = "无新闻只有总数变化"
-
-            if notify_title is not None:
-                try:
-                    message = u"最后一条: %s" % last_msg
-                except UnicodeDecodeError:
-                    message = u"最后一条: <未知>"
-
-                subtitle = u"包含更新%d条" % len(notify_message_list)
-                notify(title=notify_title,
-                       subtitle=subtitle,
-                       message=message)
+            notify_mac_msg(notify_title, notify_message_list)
 
             self.last_state = "Refresh Success"
         except ConnectionError:
             self.last_state = "Connect Failed"
 
-    def start(self):
+    def start(self, hide_terminal_process):
         # first enter just print news
         self._fetch()
         random_min_interval = 5
@@ -111,22 +85,34 @@ class CheckLoop:
         thread = None
         while True:
             try:
-                if thread and thread.isAlive():
-                    info = 'checking news.....                                            '
+                if not hide_terminal_process:
+                    if thread and thread.isAlive():
+                        info = 'checking news.....                                            '
+
+                    else:
+                        interval_sec -= .2
+                        info = "waiting next check less %ds     " % interval_sec
+                        if self.last_state:
+                            info = "[Last %s] %s" % (self.last_state, info)
+
+                    print(bar[i % len(bar)] + ' ' + info + '\r'),
+                    i += 1
+                    stdout.flush()
+                    time.sleep(.2)
+                    if interval_sec <= 0:
+                        thread = Thread(target=self._fetch)
+                        thread.start()
+                        interval_sec = randint(random_min_interval, random_max_interval)
                 else:
-                    interval_sec -= .2
-                    info = "waiting next check less %ds     " % interval_sec
-                    if self.last_state:
-                        info = "[Last %s] %s" % (self.last_state, info)
-
-                print(bar[i % len(bar)] + ' ' + info + '\r'),
-                i += 1
-                stdout.flush()
-                time.sleep(.2)
-
-                if interval_sec <= 0:
-                    thread = Thread(target=self._fetch)
-                    thread.start()
+                    info = "waiting %ds for next check      " % interval_sec
+                    info = "[Last %s] %s" % (self.last_state, info)
+                    print(info + '\r'),
+                    stdout.flush()
+                    time.sleep(interval_sec)
                     interval_sec = randint(random_min_interval, random_max_interval)
+                    print('checking news.....                                            \r'),
+                    stdout.flush()
+                    self._fetch()
+
             except KeyboardInterrupt:
                 exit(0)

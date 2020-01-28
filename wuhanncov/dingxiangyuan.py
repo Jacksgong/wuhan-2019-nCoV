@@ -18,7 +18,8 @@ import json
 import re
 from datetime import datetime
 
-from wuhanncov.terminalcolor import colorize, YELLOW, GREEN
+from wuhanncov.output_helper import notify_event, notify_summary
+from wuhanncov.terminalcolor import colorize, YELLOW
 
 
 class Event:
@@ -51,12 +52,6 @@ class Event:
 
     def dump_json(self):
         return json.dumps(self.origin_json, ensure_ascii=False)
-
-    def get_desc(self):
-        title = self.get_title()
-
-        return colorize(title, fg=YELLOW) + "\n" \
-               + self.summary
 
     def get_title(self):
         return u"%s - %s %s" % (self.title, self.source_name, datetime.fromtimestamp(self.timestamp_ms / 1000))
@@ -190,8 +185,7 @@ class EventList:
     def print_list(news_event_list):
         old_to_new_list = reversed(news_event_list)
         for event in old_to_new_list:
-            desc = "--------------                                               \n" + event.get_desc()
-            print(desc)
+            notify_event(event)
 
 
 class Summary:
@@ -223,9 +217,7 @@ class Summary:
         if last_summary is None or (
                 last_summary.content != self.content and self.confirm_count >= last_summary.confirm_count
                 and self.survive_count >= last_summary.survive_count):
-            print("=======================================================")
-            print(colorize(self.content, fg=GREEN))
-            print("=======================================================")
+            notify_summary(self)
             return self.content
         return None
 
