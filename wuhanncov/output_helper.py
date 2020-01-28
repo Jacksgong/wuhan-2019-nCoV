@@ -12,7 +12,8 @@ def notify_event(event):
         print desc
 
     if OutputHelper.is_lark_output:
-        notify_lark(title, event.summary, OutputHelper.lark_url)
+        msg = u"%s\\n%s" % (event.summary, event.source_url)
+        notify_lark(title, msg, OutputHelper.lark_url)
 
 
 def notify_summary(summary, increase_confirm_count, increase_dead_count, increase_survive_count):
