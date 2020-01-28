@@ -18,6 +18,8 @@ import json
 import re
 from datetime import datetime
 
+import requests
+
 from wuhanncov.output_helper import notify_event, notify_summary
 from wuhanncov.terminalcolor import colorize, YELLOW
 
@@ -235,7 +237,6 @@ class DingXiangYuan:
 
     @staticmethod
     def fetch():
-        import requests
 
         headers = {
             'authority': '3g.dxy.cn',
@@ -251,15 +252,7 @@ class DingXiangYuan:
             'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8'
         }
 
-        params = (
-            ('scene', '2'),
-            # ('clicktime', '1579578460'),
-            # ('enterid', '1579578460'),
-            ('from', 'timeline'),
-            ('isappinstalled', '0'),
-        )
-
-        response = requests.get('https://3g.dxy.cn/newh5/view/pneumonia', headers=headers, params=params)
+        response = requests.get('https://3g.dxy.cn/newh5/view/pneumonia', headers=headers)
         # print response.content
 
         summary_re = re.compile(r'try *\{ *window\.getStatisticsService *=(.*)\}catch\(e\)')
@@ -270,7 +263,7 @@ class DingXiangYuan:
         summary = None
         event_list = None
         for line in lines:
-            if line.startswith("<body>"):
+            if line.startswith("<body"):
                 is_in_body = True
 
             if line.startswith("</body>"):

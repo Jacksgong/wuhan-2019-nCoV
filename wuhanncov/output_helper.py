@@ -7,9 +7,9 @@ from wuhanncov.terminalcolor import colorize, YELLOW, GREEN
 def notify_event(event):
     title = event.get_title()
     if OutputHelper.is_terminal_output:
-        colorized = colorize(title, fg=YELLOW) + "\n" + event.summary
+        colorized = colorize(title, fg=YELLOW) + "\n" + event.summary + "\n" + event.source_url
         desc = "--------------                                               \n" + colorized
-        print desc
+        print(u' '.join([desc]).encode('utf-8').strip())
 
     if OutputHelper.is_lark_output:
         msg = u"%s\\n%s" % (event.summary, event.source_url)
@@ -31,7 +31,7 @@ def notify_summary(summary, increase_confirm_count, increase_dead_count, increas
         if len(title) > 0:
             terminal_info = "[" + title + "] " + terminal_info
 
-        print(terminal_info)
+        print(u' '.join([terminal_info]).encode('utf-8').strip())
         print("=======================================================")
     if OutputHelper.is_lark_output:
         notify_lark(title=title, msg=summary.content, lark_url=OutputHelper.lark_url)

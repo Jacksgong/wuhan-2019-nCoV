@@ -49,7 +49,7 @@ class CheckLoop:
         try:
             summary, event_list = self.source_list[0].fetch()
             if summary is None:
-                time.sleep(3)
+                time.sleep(5)
                 self._fetch(ignore_first_two_note)
                 return
 
