@@ -196,22 +196,21 @@ class EventList:
 
 class Summary:
     def __init__(self, summary_json):
-        # 确诊 2823 例，疑似 5794 例 死亡 81 例，治愈 58 例
-        self.content = summary_json['countRemark'].strip().replace('\n', ' ')
-
-        summary_detail_re = re.compile(r'\D*(\d+)\D*(\d+)\D*(\d+)\D*(\d+)\D*')
-        content_re = summary_detail_re.findall(self.content)
-        self.confirm_count = int(content_re[0][0])
-        self.suspect_count = int(content_re[0][1])
-        self.dead_count = int(content_re[0][2])
-        self.survive_count = int(content_re[0][3])
+        self.confirm_count = int(summary_json['confirmedCount'])
+        self.suspect_count = int(summary_json['suspectedCount'])
+        self.dead_count = int(summary_json['deadCount'])
+        self.survive_count = int(summary_json['curedCount'])
 
         self.deleted = summary_json['deleted'] != 'false'
+
+        # 确诊 2823 例，疑似 5794 例 死亡 81 例，治愈 58 例
+        self.content = u"确诊 %d 例，疑似 %d 例，死亡 %d 例，治愈 %d 例" % (
+            self.confirm_count, self.suspect_count, self.dead_count, self.survive_count)
 
         # 传播进展：疫情扩散中，存在病毒变异可能
         self.proceed = summary_json['summary']
         # 尚不明确；病毒：新型冠状病毒 2019-nCoV
-        self.source = summary_json['infectSource']
+        self.source = summary_json['virus']
         self.map_url = summary_json['imgUrl']
         # 未完全掌握，存在人传人、医务人员感染、一定范围社区传播
         self.passWay = summary_json['passWay']
