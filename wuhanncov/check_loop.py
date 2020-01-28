@@ -20,6 +20,8 @@ from sys import stdout
 from threading import Thread
 
 from requests import ConnectionError
+from requests.exceptions import ChunkedEncodingError
+
 from wuhanncov.output_helper import notify_mac_msg
 
 bar = [
@@ -78,6 +80,9 @@ class CheckLoop:
             self.last_state = "Refresh Success"
         except ConnectionError:
             self.last_state = "Connect Failed"
+        except ChunkedEncodingError:
+            self.last_state = "Chunked Encoding Failed"
+
 
     def start(self, hide_terminal_process, ignore_first_two_note):
         # first enter just print news
