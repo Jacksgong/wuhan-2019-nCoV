@@ -1,6 +1,6 @@
 # 获取武汉 2019nCov信息
 
-[![](https://img.shields.io/badge/pip-v0.1.3%20Wuhan2019nCoV-yellow.svg)](https://pypi.python.org/pypi/Wuhan2019nCoV)
+[![](https://img.shields.io/badge/pip-v0.1.4%20Wuhan2019nCoV-yellow.svg)](https://pypi.python.org/pypi/Wuhan2019nCoV)
 
 > 算是基本满足我的基本需求，要的自取，欢迎PR。
 
@@ -53,7 +53,7 @@ whncov
 ```
 $ whncov --help
 -------------------------------------------------------
-                  WuHan 2019nCov v0.1.3
+                  WuHan 2019nCov v0.1.4
 
      https://github.com/Jacksgong/wuhan-2019-nCoV
     This tool is used for crawl Wuhan 2019nCov Info

@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 __author__ = 'JacksGong'
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 __description__ = 'This tool is used for crawl Wuhan 2019nCov Info'
 
 import argparse
@@ -78,9 +78,23 @@ def main():
             print "supported dimensions are: %s" % ', '.join(dimensions)
             exit(-1)
 
-        OutputHelper.is_terminal_output = (dimension == 'all' or dimension == 'terminal')
-        OutputHelper.is_lark_output = (dimension == 'all' or dimension == 'lark')
-        OutputHelper.is_mac_output = (dimension == 'all' or dimension == 'mac')
+    if 'terminal' in args.dimension:
+        OutputHelper.is_terminal_output = True
+    else:
+        OutputHelper.is_terminal_output = False
+    if 'lark' in args.dimension:
+        OutputHelper.is_lark_output = True
+    else:
+        OutputHelper.is_lark_output = False
+    if 'mac' in args.dimension:
+        OutputHelper.is_mac_output = True
+    else:
+        OutputHelper.is_mac_output = False
+
+    if 'all' in args.dimension:
+        OutputHelper.is_terminal_output = True
+        OutputHelper.is_lark_output = True
+        OutputHelper.is_mac_output = True
 
     CheckLoop([DingXiangYuan(), WangYi(), YanShiXinWen(), FengHuang(), TouTiao()]) \
         .start(hide_terminal_process, ignore_first_two_note)
