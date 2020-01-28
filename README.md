@@ -4,6 +4,12 @@
 
 > 算是基本满足我的基本需求，要的自取，欢迎PR。
 
+## 直接加入飞书接收通知
+
+我和“武汉2019nCoV情况通知”的小伙伴都在飞书等你，用这个专属链接加入我们吧！https://go.feishu.cn/gYyh9M/
+
+![](https://github.com/Jacksgong/wuhan-2019-nCoV/raw/master/arts/lark-invite-3.png)
+
 ## 安装
 
 ```
