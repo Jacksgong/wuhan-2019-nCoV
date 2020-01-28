@@ -55,10 +55,13 @@ def main():
                         default='')
     parser.add_argument('--hide-terminal-process', dest='hide_terminal_process', action='store_true',
                         help='whether need to hide process waiting output')
+    parser.add_argument('--ignore-first-two-note', dest='ignore_first_two_note', action='store_true',
+                        help='whether need to ignore first two output')
 
     args = parser.parse_args()
     OutputHelper.lark_url = args.lark_url
     hide_terminal_process = args.hide_terminal_process
+    ignore_first_two_note = args.ignore_first_two_note
 
     print ".........................."
     print "Output Dimensions: [%s]" % ', '.join(args.dimension)
@@ -66,6 +69,8 @@ def main():
         print "Lark Url: " + OutputHelper.lark_url
     if hide_terminal_process:
         print "Hide terminal process waiting output"
+    if ignore_first_two_note:
+        print "Ignore first two output"
     print ".........................."
 
     for dimension in args.dimension:
@@ -77,4 +82,5 @@ def main():
         OutputHelper.is_lark_output = (dimension == 'all' or dimension == 'lark')
         OutputHelper.is_mac_output = (dimension == 'all' or dimension == 'mac')
 
-    CheckLoop([DingXiangYuan(), WangYi(), YanShiXinWen(), FengHuang(), TouTiao()]).start(hide_terminal_process)
+    CheckLoop([DingXiangYuan(), WangYi(), YanShiXinWen(), FengHuang(), TouTiao()]) \
+        .start(hide_terminal_process, ignore_first_two_note)

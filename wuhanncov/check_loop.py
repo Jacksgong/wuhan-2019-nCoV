@@ -45,38 +45,44 @@ class CheckLoop:
         # todo use for fetch data and compare, need a unified compare
         self.source_list = source_list
 
-    def _fetch(self):
+    def _fetch(self, ignore_first_two_note=False):
         try:
             summary, event_list = self.source_list[0].fetch()
             if summary is None:
                 time.sleep(3)
-                self._fetch()
+                self._fetch(ignore_first_two_note)
                 return
 
+            notify_title = None
+            notify_message_list = list()
+
             if self.last_summary is None:
-                notify_title = summary.print_desc()
-                notify_message_list = event_list.print_desc()
+                if not ignore_first_two_note:
+                    notify_title = summary.print_desc()
+                    notify_message_list = event_list.print_desc()
             else:
                 notify_title = summary.print_desc(self.last_summary)
                 notify_message_list = event_list.print_desc_with_compare(self.last_event_list)
 
-            if notify_title is not None:
+            if notify_title is not None or self.last_summary is None:
                 # valid summary
                 self.last_summary = summary
 
-            if len(notify_message_list) > 0:
+            if len(notify_message_list) > 0 or self.last_event_list is None:
                 # valid event list
                 self.last_event_list = event_list
 
-            notify_mac_msg(notify_title, notify_message_list)
+            if not ignore_first_two_note:
+                notify_mac_msg(notify_title, notify_message_list)
 
             self.last_state = "Refresh Success"
         except ConnectionError:
             self.last_state = "Connect Failed"
 
-    def start(self, hide_terminal_process):
+    def start(self, hide_terminal_process, ignore_first_two_note):
         # first enter just print news
-        self._fetch()
+        self._fetch(ignore_first_two_note)
+
         random_min_interval = 5
         random_max_interval = 20
 
