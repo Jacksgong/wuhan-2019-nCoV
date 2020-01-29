@@ -63,7 +63,8 @@ class Event:
     def is_same(self, event):
         # return self.title == event.title and self.source_name == event.source_name \
         #        and self.timestamp_ms / 1000 == event.timestamp_ms / 1000
-        return self.get_title().__eq__(event.get_title())
+        return self.get_title().__eq__(event.get_title()) or \
+               (self.summary == event.summary and self.timestamp_ms == event.timestamp_ms)
 
     def __hash__(self):
         return hash(self.get_title())
