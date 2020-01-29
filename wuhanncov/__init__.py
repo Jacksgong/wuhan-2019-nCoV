@@ -19,6 +19,8 @@ __version__ = '0.1.4'
 __description__ = 'This tool is used for crawl Wuhan 2019nCov Info'
 
 import argparse
+from os import environ, mkdir
+from os.path import exists
 
 from wuhanncov.check_loop import CheckLoop
 from wuhanncov.dingxiangyuan import DingXiangYuan
@@ -96,5 +98,10 @@ def main():
         OutputHelper.is_lark_output = True
         OutputHelper.is_mac_output = True
 
-    CheckLoop([DingXiangYuan(), WangYi(), YanShiXinWen(), FengHuang(), TouTiao()]) \
+    HOME_PATH = environ['HOME']
+    cache_path = HOME_PATH + "/.whncov"
+    if not exists(cache_path):
+        mkdir(cache_path)
+
+    CheckLoop(cache_path, [DingXiangYuan(), WangYi(), YanShiXinWen(), FengHuang(), TouTiao()]) \
         .start(hide_terminal_process, ignore_first_two_note)

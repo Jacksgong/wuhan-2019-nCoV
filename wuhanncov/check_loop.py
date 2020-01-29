@@ -22,6 +22,7 @@ from threading import Thread
 from requests import ConnectionError
 from requests.exceptions import ChunkedEncodingError
 
+from wuhanncov.dingxiangyuan import Summary
 from wuhanncov.output_helper import notify_mac_msg
 
 bar = [
@@ -40,12 +41,13 @@ bar = [
 
 class CheckLoop:
 
-    def __init__(self, source_list):
+    def __init__(self, cache_path, source_list):
         self.last_summary = None
         self.last_event_list = None
         self.last_state = None
         # todo use for fetch data and compare, need a unified compare
         self.source_list = source_list
+        self.cache_path = cache_path
 
     def _fetch(self, ignore_first_two_note=False):
         try:
@@ -68,6 +70,7 @@ class CheckLoop:
 
             if notify_title is not None or self.last_summary is None:
                 # valid summary
+                summary.write_to_file(self.cache_path)
                 self.last_summary = summary
 
             if len(notify_message_list) > 0 or self.last_event_list is None:
@@ -84,6 +87,10 @@ class CheckLoop:
             self.last_state = "Chunked Encoding Failed"
 
     def start(self, hide_terminal_process, ignore_first_two_note):
+        summary = Summary().restore_from_file(self.cache_path)
+        if summary:
+            self.last_summary = summary
+
         # first enter just print news
         self._fetch(ignore_first_two_note)
 

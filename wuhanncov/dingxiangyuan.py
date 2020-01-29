@@ -17,6 +17,8 @@ limitations under the License.
 import json
 import re
 from datetime import datetime
+from os import mknod
+from os.path import exists
 
 import requests
 
@@ -128,7 +130,7 @@ class EventList:
     def print_desc_with_compare(self, last_event_list):
         if len(self.event_list) <= 0:
             return list()
-       
+
         last_top_event = last_event_list.event_list[0]
         last_second_event = last_event_list.event_list[1]
         last_third_event = last_event_list.event_list[3]
@@ -194,7 +196,67 @@ class EventList:
 
 
 class Summary:
-    def __init__(self, summary_json):
+    def __init__(self, summary_json=None):
+        self.confirm_count = 0
+        self.suspect_count = 0
+        self.dead_count = 0
+        self.survive_count = 0
+
+        self.deleted = False
+
+        # 确诊 2823 例，疑似 5794 例 死亡 81 例，治愈 58 例
+        self.content = u"确诊 %d 例，疑似 %d 例，死亡 %d 例，治愈 %d 例" % (
+            self.confirm_count, self.suspect_count, self.dead_count, self.survive_count)
+
+        # 传播进展：疫情扩散中，存在病毒变异可能
+        self.proceed = ''
+        # 尚不明确；病毒：新型冠状病毒 2019-nCoV
+        self.source = ''
+        self.map_url = ''
+        # 未完全掌握，存在人传人、医务人员感染、一定范围社区传播
+        self.passWay = ''
+        self.origin_json = summary_json
+
+        if summary_json is not None:
+            self.restore_from_json(summary_json)
+
+    def dump_json(self):
+        return json.dumps(self.origin_json, ensure_ascii=False)
+
+    def print_desc(self, last_summary=None):
+        if last_summary is None or (
+                last_summary.content != self.content and self.confirm_count >= last_summary.confirm_count
+                and self.survive_count >= last_summary.survive_count):
+            increase_confirm_count = 0
+            increase_survive_count = 0
+            increase_dead_count = 0
+            if last_summary is not None:
+                increase_confirm_count = self.confirm_count - last_summary.confirm_count
+                increase_survive_count = self.survive_count - last_summary.survive_count
+                increase_dead_count = self.dead_count - last_summary.dead_count
+            notify_summary(self, increase_confirm_count, increase_dead_count, increase_survive_count)
+            return self.content
+        return None
+
+    def write_to_file(self, path):
+        summary_path = path + '/summary'
+
+        # with open(summary_path, 'w') as outfile:
+        #     json.dumps(self.origin_json, outfile, ensure_ascii=False)
+
+    def restore_from_file(self, path):
+        summary_path = path + '/summary'
+        if not exists(summary_path):
+            return None
+
+        print 'restore summary from ' + summary_path
+        with open(summary_path) as json_file:
+            origin_json = json.load(json_file, ensure_ascii=False)
+            self.restore_from_json(origin_json)
+
+        return self
+
+    def restore_from_json(self, summary_json):
         self.confirm_count = int(summary_json['confirmedCount'])
         self.suspect_count = int(summary_json['suspectedCount'])
         self.dead_count = int(summary_json['deadCount'])
@@ -214,24 +276,6 @@ class Summary:
         # 未完全掌握，存在人传人、医务人员感染、一定范围社区传播
         self.passWay = summary_json['passWay']
         self.origin_json = summary_json
-
-    def dump_json(self):
-        return json.dumps(self.origin_json, ensure_ascii=False)
-
-    def print_desc(self, last_summary=None):
-        if last_summary is None or (
-                last_summary.content != self.content and self.confirm_count >= last_summary.confirm_count
-                and self.survive_count >= last_summary.survive_count):
-            increase_confirm_count = 0
-            increase_survive_count = 0
-            increase_dead_count = 0
-            if last_summary is not None:
-                increase_confirm_count = self.confirm_count - last_summary.confirm_count
-                increase_survive_count = self.survive_count - last_summary.survive_count
-                increase_dead_count = self.dead_count - last_summary.dead_count
-            notify_summary(self, increase_confirm_count, increase_dead_count, increase_survive_count)
-            return self.content
-        return None
 
 
 class DingXiangYuan:
