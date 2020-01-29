@@ -20,7 +20,7 @@ from setuptools import setup, find_packages
 setup(
     name='Wuhan2019nCoV',
     version='0.1.4',
-    packages=find_packages(exclude=['ats']),
+    packages=find_packages(exclude=['ats', 'check']),
 
     install_requires=['requests'],
 
