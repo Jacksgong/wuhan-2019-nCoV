@@ -61,8 +61,9 @@ class Event:
         return u"%s - %s %s" % (self.title, self.source_name, datetime.fromtimestamp(self.timestamp_ms / 1000))
 
     def is_same(self, event):
-        # return self.title == event.title and self.source_name == event.source_name \
-        #        and self.timestamp_ms / 1000 == event.timestamp_ms / 1000
+        if self.source_url is not None and len(self.source_url) > 0:
+            return self.source_url == event.source_url
+
         return self.get_title().__eq__(event.get_title()) or \
                (self.summary == event.summary and self.timestamp_ms == event.timestamp_ms)
 
