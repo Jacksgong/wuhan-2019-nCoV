@@ -126,6 +126,9 @@ class EventList:
         return change_list
 
     def print_desc_with_compare(self, last_event_list):
+        if len(self.event_list) <= 0:
+            return list()
+       
         last_top_event = last_event_list.event_list[0]
         last_second_event = last_event_list.event_list[1]
         last_third_event = last_event_list.event_list[3]

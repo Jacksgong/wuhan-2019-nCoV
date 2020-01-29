@@ -83,7 +83,6 @@ class CheckLoop:
         except ChunkedEncodingError:
             self.last_state = "Chunked Encoding Failed"
 
-
     def start(self, hide_terminal_process, ignore_first_two_note):
         # first enter just print news
         self._fetch(ignore_first_two_note)
