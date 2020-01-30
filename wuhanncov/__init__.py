@@ -61,14 +61,14 @@ def main():
                         help='whether need to ignore first two output')
 
     args = parser.parse_args()
-    OutputHelper.lark_url = args.lark_url
+    OutputHelper.lark_urls = args.lark_url.split(',')
     hide_terminal_process = args.hide_terminal_process
     ignore_first_two_note = args.ignore_first_two_note
 
     print ".........................."
     print "Output Dimensions: [%s]" % ', '.join(args.dimension)
-    if len(OutputHelper.lark_url) > 0:
-        print "Lark Url: " + OutputHelper.lark_url
+    if len(OutputHelper.lark_urls) > 0:
+        print "Lark Url: " + OutputHelper.lark_urls.__str__()
     if hide_terminal_process:
         print "Hide terminal process waiting output"
     if ignore_first_two_note:

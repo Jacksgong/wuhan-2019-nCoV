@@ -13,10 +13,12 @@ def notify_event(event):
 
     if OutputHelper.is_lark_output:
         msg = u"%s\\n%s" % (event.summary, event.source_url)
-        notify_lark(title, msg, OutputHelper.lark_url)
+        for lark_url in OutputHelper.lark_urls:
+            notify_lark(title, msg, lark_url)
 
 
-def notify_summary(summary, increase_confirm_count, increase_suspect_count, increase_dead_count, increase_survive_count):
+def notify_summary(summary, increase_confirm_count, increase_suspect_count, increase_dead_count,
+                   increase_survive_count):
     title = ''
     if increase_confirm_count > 0:
         title = u"%s 新增确诊 %d 例" % (title, increase_confirm_count)
@@ -36,7 +38,8 @@ def notify_summary(summary, increase_confirm_count, increase_suspect_count, incr
         print(u' '.join([terminal_info]).encode('utf-8').strip())
         print("=======================================================")
     if OutputHelper.is_lark_output:
-        notify_lark(title=title, msg=summary.content, lark_url=OutputHelper.lark_url)
+        for lark_url in OutputHelper.lark_urls:
+            notify_lark(title=title, msg=summary.content, lark_url=lark_url)
 
 
 def notify_mac_msg(notify_title, notify_message_list):
@@ -72,7 +75,7 @@ class OutputHelper:
     is_lark_output = False
     is_mac_output = True
     last_mac_title = None
-    lark_url = None
+    lark_urls = list()
 
     def __init__(self):
         pass
