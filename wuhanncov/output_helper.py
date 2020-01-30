@@ -16,10 +16,12 @@ def notify_event(event):
         notify_lark(title, msg, OutputHelper.lark_url)
 
 
-def notify_summary(summary, increase_confirm_count, increase_dead_count, increase_survive_count):
+def notify_summary(summary, increase_confirm_count, increase_suspect_count, increase_dead_count, increase_survive_count):
     title = ''
     if increase_confirm_count > 0:
         title = u"%s 新增确诊 %d 例" % (title, increase_confirm_count)
+    if increase_suspect_count > 0:
+        title = u"%s 新增疑似 %d 例" % (title, increase_suspect_count)
     if increase_dead_count > 0:
         title = u"%s 新增死亡 %d 例" % (title, increase_dead_count)
     if increase_survive_count > 0:

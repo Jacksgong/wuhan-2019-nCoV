@@ -228,15 +228,19 @@ class Summary:
     def print_desc(self, last_summary=None):
         if last_summary is None or (
                 last_summary.content != self.content and self.confirm_count >= last_summary.confirm_count
-                and self.survive_count >= last_summary.survive_count):
+                and self.survive_count >= last_summary.survive_count and self.dead_count >= last_summary.dead_count
+                and self.suspect_count >= last_summary.suspect_count):
             increase_confirm_count = 0
             increase_survive_count = 0
+            increase_suspect_count = 0
             increase_dead_count = 0
             if last_summary is not None:
                 increase_confirm_count = self.confirm_count - last_summary.confirm_count
                 increase_survive_count = self.survive_count - last_summary.survive_count
                 increase_dead_count = self.dead_count - last_summary.dead_count
-            notify_summary(self, increase_confirm_count, increase_dead_count, increase_survive_count)
+                increase_suspect_count = self.suspect_count - last_summary.suspect_count
+            notify_summary(self, increase_confirm_count, increase_suspect_count, increase_dead_count,
+                           increase_survive_count)
             return self.content
         return None
 
